@@ -33,3 +33,30 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.links-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 50px;
+
+  color: white;
+}
+
+.links-list li {
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.links-list li a {
+  font-size: 16px;
+  font-weight: 500;
+}
+.links-list li:first-child {
+  background-color: red;
+}
+
+.links-list li:last-child {
+  background-color: blue;
+}

@@ -1,0 +1,38 @@
+section {
+  padding-top: 50px;
+  padding-left: 50px;
+}
+
+.home {
+  font-size: 18px;
+  color: currentColor;
+  text-decoration: none;
+  background-color: black;
+  color: white;
+  padding: 10px;
+}
+
+fieldset {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+button {
+  width: 230px;
+  height: 25px;
+  background-color: lightgray;
+  border: transparent;
+  border-radius: 5px;
+}
+
+label:first-child {
+  display: flex;
+  flex-direction: column;
+}
+input[type='number'] {
+  width: 210px;
+  height: 25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 13px;
+}
