@@ -15,7 +15,7 @@ const data = {
 let intervalId = null;
 data.btnStart.disabled = true;
 
-const options = {
+flatpickr(data.input, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -23,44 +23,39 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
 
-    if (selectedDates[0] < new Date()) {
-        iziToast.show({
-            message: 'Please, choose a date in the future!',
-            backgroundColor: 'red',
-            messageColor: 'white',
-            position: 'topRight',
-     })
-      return;
-    }
-    if (selectedDates[0] > new Date()) {
+    if (selectedDates[0] <= new Date()) {
+      iziToast.error({
+        message: 'Please, choose a date in the future!',
+        position: 'topRight',
+      });
+    } else {
       data.btnStart.disabled = false;
     }
-
-    data.btnStart.addEventListener('click', () => {
-      intervalId = setInterval(() => {
-        const counter = selectedDates[0] - new Date();
-
-        if (counter < 1000) {
-          clearInterval(intervalId);
-        }
-        const result = convertMs(counter);
-        viewOfTimer(result);
-      }, 1000);
-    });
   },
-};
+});
 
-flatpickr(data.input, options);
+data.btnStart.addEventListener('click', () => {
+  data.btnStart.disabled = true;
+  data.input.disabled = true;
+  intervalId = setInterval(() => {
+    const choosenDate = new Date(data.input.value);
+    const timeDifference = choosenDate - new Date();
+    const { days, hours, minutes, seconds } = convertMs(timeDifference);
 
-function viewOfTimer({ days, hours, minutes, seconds }) {
-  data.days.textContent = `${days}`;
-  data.hours.textContent = `${hours}`;
-  data.minutes.textContent = `${minutes}`;
-  data.seconds.textContent = `${seconds}`;
-}
+    data.days.textContent = addLeadingZero(days);
+    data.hours.textContent = addLeadingZero(hours);
+    data.minutes.textContent = addLeadingZero(minutes);
+    data.seconds.textContent = addLeadingZero(seconds);
+
+        if (timeDifference < 1000) {
+          clearInterval(intervalId);
+          data.btnStart.disabled = false;
+        }
+      }, 1000);
+})
 
 function addLeadingZero(value) {
-  return String(value).padStart(2, '0');
+  return `${value}`.padStart(2, '0');
 }
 
 function convertMs(ms) {
@@ -70,10 +65,11 @@ function convertMs(ms) {
   const hour = minute * 60;
   const day = hour * 24;
 
-  const days = addLeadingZero(Math.floor(ms / day));
-  const hours = addLeadingZero(Math.floor((ms % day) / hour));
-  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
-  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+  const days = Math.floor(ms / day);
+  const hours = Math.floor((ms % day) / hour);
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
 }
+

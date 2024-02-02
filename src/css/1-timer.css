@@ -33,6 +33,11 @@ button {
   font-size: 16px;
 }
 
+button:disabled {
+  background-color: lightblue;
+  border: 1px solid lightblue;
+}
+
 .timer {
   display: flex;
   align-items: center;

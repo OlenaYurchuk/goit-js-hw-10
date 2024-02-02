@@ -7,7 +7,7 @@ const form = document.querySelector('.form');
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const delay = event.currentTarget.delay.value;
+    const delay = event.currentTarget.delay.valueAsNumber;
     const option = event.currentTarget.state.value;
    
     createPromise(option, delay);
@@ -16,14 +16,14 @@ form.addEventListener('submit', (event) => {
 
 function createPromise(option, delay) {
     const promise = new Promise((resolve, reject) => {
-        
-        if (option === 'fulfilled') {
-            setTimeout(() => {
+
+        setTimeout(() => {
+            if (option === 'fulfilled') {
                 resolve(delay);
-            }, delay);
-        } else {
-            reject(delay);
-        }  
+            } else {
+                reject(delay);
+            }
+        }, delay);
     });
 
 promise
